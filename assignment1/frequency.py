@@ -1,10 +1,11 @@
 import sys
 import json
+from collections import defaultdict
 
 def main():
 
     skip = ['rt','a','an','and','of','to','the','is']
-    wordCount = {}
+    wordCount = defaultdict(int)
     totalCount = 0.0
 
     tweet_file = open(sys.argv[1])
@@ -14,13 +15,10 @@ def main():
 	if ('text' in s):
 	    words = s['text'].split()
 	    for word in words:
-		word = word.lower().strip(' \'",\#')
+		word = word.lower().strip(' \'",\#!?')
 		if (not ((word in skip) | word.startswith('@'))):
 		    totalCount += 1
-		    if (word in wordCount):
-			wordCount[word] += 1
-		    else:
-			wordCount[word] = 1
+		    wordCount[word] += 1
 
     words = wordCount.keys()
     words.sort()
